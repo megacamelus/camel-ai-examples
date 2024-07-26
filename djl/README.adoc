@@ -1,0 +1,77 @@
+== Camel AI Example: DJL
+
+=== Introduction
+
+This directory contains a collection of small examples for showing what the https://camel.apache.org/components/next/djl-component.html[Camel DJL component]
+can do.
+
+=== Example: MLP (Multilayer Perceptrons)
+
+*Requires: Apache Camel 4.8.0 or later*
+
+Using the MLP model from the https://docs.djl.ai/model-zoo/index.html[DJL basic model zoo],
+you can create a Camel route that recognises handwritten digits.
+
+This example randomly picks up a data directory link:../data/mnist[`data/mnist/[0-9\]`]
+and reads the images of handwritten digits. The route then answers which digit each
+image represents as follows:
+
+----
+2024-07-25 14:30:10.236  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 10.png => 0
+2024-07-25 14:30:10.247  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 13.png => 0
+2024-07-25 14:30:10.259  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 25.png => 0
+2024-07-25 14:30:10.268  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 28.png => 0
+2024-07-25 14:30:10.276  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 3.png => 0
+2024-07-25 14:30:10.284  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 55.png => 0
+2024-07-25 14:30:10.293  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 69.png => 0
+2024-07-25 14:30:10.301  INFO 1709528 --- [://data/mnist/0] mlp.java:15 : 71.png => 0
+----
+
+You can run this example from the project root using:
+
+[source,console]
+----
+camel run djl/mlp.java
+----
+
+=== Example: SSD (Single Shot Detector)
+
+*Requires: Apache Camel 4.8.0 or later*
+
+Using the SSD model from the https://docs.djl.ai/engines/pytorch/pytorch-model-zoo/index.html[DJL PyTorch model zoo],
+you can create a Camel route that detects objects from images.
+
+This example reads the images of animals and objects from a directory link:../data/objects[`data/objects`]
+and answers what are included in them with probabilities and bounding boxes as follows:
+
+----
+2024-07-25 14:42:13.351  INFO 1732671 --- [://data/objects] ssd.java:12 : dog-cat.jpg => [
+        {"class": "dog", "probability": 0.93434, "bounds": {"x"=0.004, "y"=0.183, "width"=0.574, "height"=0.819}}
+        {"class": "cat", "probability": 0.82805, "bounds": {"x"=0.618, "y"=0.286, "width"=0.327, "height"=0.714}}
+]
+2024-07-25 14:42:13.716  INFO 1732671 --- [://data/objects] ssd.java:12 : dog_bike_car.jpg => [
+        {"class": "dog", "probability": 0.96922, "bounds": {"x"=0.162, "y"=0.357, "width"=0.250, "height"=0.545}}
+        {"class": "bicycle", "probability": 0.66656, "bounds": {"x"=0.152, "y"=0.249, "width"=0.570, "height"=0.558}}
+        {"class": "truck", "probability": 0.62682, "bounds": {"x"=0.610, "y"=0.131, "width"=0.284, "height"=0.167}}
+]
+2024-07-25 14:42:14.034  INFO 1732671 --- [://data/objects] ssd.java:12 : kitten.jpg => [
+        {"class": "cat", "probability": 0.95371, "bounds": {"x"=0.195, "y"=0.039, "width"=0.716, "height"=0.885}}
+]
+----
+
+You can run this example from the project root using:
+
+[source,console]
+----
+camel run djl/ssd.java
+----
+
+=== Help and contributions
+
+If you hit any problem using Camel or have some feedback, then please
+https://camel.apache.org/community/support/[let us know].
+
+We also love contributors, so
+https://camel.apache.org/community/contributing/[get involved] :-)
+
+The Camel riders!

@@ -1,0 +1,42 @@
+= Welcome to the Apache Camel AI Examples
+
+== Introduction
+
+This repository contains the various examples of AI and machine learning applications
+using Apache Camel. The examples are designed to be immediately executable using
+Camel JBang. If you want to start a new full-fledged Camel application project based
+on one of these examples, you can use the Camel JBang `export` command to generate
+a Maven project.
+
+View the individual example READMEs for details.
+
+=== Executing
+
+Run the examples using https://camel.apache.org/manual/camel-jbang.html[Camel JBang]. For instance, when you want to run `djl/ssd.java` example, you can execute the following command:
+
+[source,console]
+----
+camel run djl/ssd.java
+----
+
+== Examples
+
+[width="100%",cols="4,2,4",options="header"]
+|===
+| Example | Category | Description
+
+| link:image-to-text/README.adoc[Image to Text] | CV | An example for showing how Camel can consume images and route the messages based on the text output classified from the images.
+
+| link:djl/README.adoc[DJL] | CV | A collection of small examples for showing what the Camel DJL component can do.
+|===
+
+== Help and contributions
+
+If you hit any problem using Camel or have some feedback,
+then please https://camel.apache.org/community/support/[let us know].
+
+We also love contributors,
+so https://camel.apache.org/community/contributing/[get involved] :-)
+
+The Camel riders!
+
