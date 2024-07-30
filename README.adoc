@@ -28,6 +28,8 @@ camel run djl/ssd.java
 | link:image-to-text/README.adoc[Image to Text] | CV | An example for showing how Camel can consume images and route the messages based on the text output classified from the images.
 
 | link:djl/README.adoc[DJL] | CV | A collection of small examples for showing what the Camel DJL component can do.
+
+| link:speech-to-text/README.adoc[Speech to Text] | Audio, NLP | An example for showing how Camel can translate audio speech data to text and then apply sentiment analysis to it for routing the messages.
 |===
 
 == Help and contributions

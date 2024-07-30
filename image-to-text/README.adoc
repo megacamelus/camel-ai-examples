@@ -15,7 +15,7 @@ image::edge-ai.png[Image recognition and classification in edge computing]
 
 What link:image_to_text.java[this example] does is as follows:
 
-1. Read image files (jpg or png) from the `data/inbox` directory.
+1. Read image files (`.jpg` or `.png`) from the `data/inbox` directory.
 2. Feed them to the `ssd` DJL PyTorch model for object detection.
 3. Convert the results from `DetectedObjects` to `Image[]`.
 4. Split the images and feed each of them to the `resnet` DJL PyTorch model for image classification.

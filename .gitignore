@@ -5,3 +5,4 @@
 data/*
 !data/mnist
 !data/objects
+!data/speech
