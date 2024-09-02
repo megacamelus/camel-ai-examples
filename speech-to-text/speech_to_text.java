@@ -1,4 +1,6 @@
-// camel-k: dependency=camel:djl dependency=ai.djl.pytorch:pytorch-engine:0.29.0 dependency=ai.djl.pytorch:pytorch-model-zoo:0.29.0
+// camel-k: dependency=camel:djl
+//DEPS ai.djl.pytorch:pytorch-engine:0.29.0
+//DEPS ai.djl.pytorch:pytorch-model-zoo:0.29.0
 
 import java.io.IOException;
 import java.net.URI;

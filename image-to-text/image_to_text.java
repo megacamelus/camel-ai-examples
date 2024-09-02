@@ -1,4 +1,8 @@
-// camel-k: dependency=camel:djl dependency=ai.djl.pytorch:pytorch-engine:0.29.0 dependency=ai.djl.pytorch:pytorch-model-zoo:0.29.0 dependency=net.sf.extjwnl:extjwnl:2.0.5 dependency=net.sf.extjwnl:extjwnl-data-wn31:1.2
+// camel-k: dependency=camel:djl
+//DEPS ai.djl.pytorch:pytorch-engine:0.29.0
+//DEPS ai.djl.pytorch:pytorch-model-zoo:0.29.0
+//DEPS net.sf.extjwnl:extjwnl:2.0.5
+//DEPS net.sf.extjwnl:extjwnl-data-wn31:1.2
 
 import java.util.List;
 
