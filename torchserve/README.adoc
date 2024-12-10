@@ -1,0 +1,236 @@
+== Camel AI Example: TorchServe
+
+*Requires: Apache Camel 4.9.0 or later*
+
+=== Introduction
+
+This directory contains a collection of small examples for showing what the https://camel.apache.org/components/next/torchserve-component.html[Camel TorchServe component]
+can do.
+
+=== Preparation
+
+Before you run this set of examples, you need a local TorchServe server running. The easiest way to do so is to https://github.com/pytorch/serve/blob/master/docker/README.md[use a TorchServe Docker image], as shown below:
+
+[source,console]
+----
+docker run --rm -it -p 8080:8080 -p 8081:8081 -p 8082:8082 pytorch/torchserve \
+    torchserve --disable-token-auth --enable-model-api --model-store /home/model-server/model-store
+----
+
+=== The examples
+
+This set of examples shows you how you can interact with a TorchServe server using the Camel component.
+
+In order to perform inference with TorchServe, an AI model is required. However, right after the TorchServe server is started, there are no models registered yet, so a model has to be registered first. Therefore, this example set has roughly the following flow:
+
+1. Register a model with the server
+2. Check the registered model
+3. Perform inference on the registered model
+4. Unregister the model
+
+==== Health check of a TorchServe server
+
+You can always check health of the running TorchServe server by link:ping.java[pinging it].
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/ping.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 37290 --- [ - timer://ping] ping.java:16 : Status: Healthy
+----
+
+==== Register a model
+
+Let's link:register_model.java[register a model] to the server. This example picks up a pre-trained link:https://torchserve.pytorch.org/mar_files/mnist_v2.mar[MNIST V2 model] from https://pytorch.org/serve/model_zoo.html[the TorchServe model zoo].
+
+Note also that registering a model is not enough to get ready for inference with TorchServe, because workers are needed to run inference with the model and there is no worker set up initially. The link:register_model.java[example] also scales workers with the minimum and maximum numbers of workers to 1 and 2, respectively.
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/register_model.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 39475 --- [imer://register] register_model.java:18 : Status: Model "mnist_v2" Version: 2.0 registered with 0 initial workers. Use scale workers API to add workers for the model.
+INFO 39475 --- [imer://register] register_model.java:26 : Status: Processing worker updates...
+----
+
+==== Set default version of a model
+
+To operate on a registered model, you need to specify the model name and version. However, by link:set_default.java[setting a default version of a model], you can omit the version information when specifying the model to operate.
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/set_default.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 41146 --- [r://set-default] set_default.java:16 : Status: Default version successfully updated for model "mnist_v2" to "2.0"
+----
+
+==== Describe a model
+
+Once registered a model, you can link:describe_model.java[get the detailed information of the model].
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/describe_model.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 41476 --- [imer://describe] describe_model.java:16 : ModelDetail {
+    modelName: mnist_v2
+    modelVersion: 2.0
+    modelUrl: https://torchserve.pytorch.org/mar_files/mnist_v2.mar
+    minWorkers: 1
+    maxWorkers: 2
+    batchSize: 1
+    maxBatchDelay: 100
+    status: null
+    workers: [Worker { id: 9000, startTime: 2024-12-10T07:10:34.700Z, gpu: false, status: READY }]
+    metrics: null
+    jobQueueStatus: JobQueueStatus { remainingCapacity: 1000, pendingRequests: 0 }
+}
+----
+
+==== List models
+
+You can also link:list_models.java[list the registered models] on the server.
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/list_models.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 51844 --- [ - timer://list] list_models.java:16 : [Model { modelName: mnist_v2, modelUrl: https://torchserve.pytorch.org/mar_files/mnist_v2.mar }]
+----
+
+==== Run prediction on a model
+
+Now we are ready to run some inference (i.e. prediction) on the registered model. The link:predictions.java[example] reads handwritten digit images from the link:../data/mnist/[`data/mnist`] directory and sends them to the TorchServe server for recognising the numbers with the MNIST V2 model.
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/predictions.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 9/58.png => 9
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 0/71.png => 0
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 7/60.png => 7
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 6/88.png => 6
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 1/14.png => 1
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 8/177.png => 8
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 4/48.png => 4
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 3/63.png => 3
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 2/77.png => 2
+...
+INFO 48902 --- [le://data/mnist] predictions.java:16 : 5/59.png => 5
+----
+
+==== Unregister a model
+
+Once you no longer need a model, you can link:unregister_model.java[unregister it] from the server.
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/unregister_model.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 51276 --- [er://unregister] unregister_model.java:16 : Status: Model "mnist_v2" unregistered
+----
+
+==== Metrics
+
+TorchServe also provides the https://pytorch.org/serve/metrics_api.html[Metrics API] to get the metrics of the server in the Prometheus format. However, to make it work, you need to configure `metrics_mode` to `prometheus` in the TorchServe configuration file `config.properties` (see the example link:config.properties[]).
+
+[TIP]
+.Set up the configuration file with TorchServe docker container
+====
+To pass a custom configuration file to the TorchServe docker container, you can mount the file to the container at `/home/model-server/config.properties` as shown below:
+
+[source,console]
+----
+docker run --rm -it -p 8080:8080 -p 8081:8081 -p 8082:8082 \
+    -v /path/to/config.properties:/home/model-server/config.properties \
+    pytorch/torchserve \
+    torchserve --disable-token-auth --enable-model-api --model-store /home/model-server/model-store
+----
+====
+
+Once you set up the metrics mode correctly on the TorchServe server, you can link:metrics.java[access the metrics] of the server in the Prometheus format. The example demonstrates how to get the memory usage (`MemoryUsed`) of the server.
+
+To run this example, execute the following command from the project root:
+
+[source,console]
+----
+camel run torchserve/metrics.java
+----
+
+You should get the following output in the console:
+
+----
+INFO 58035 --- [timer://metrics] metrics.java:16 : # HELP MemoryUsed Torchserve prometheus gauge metric with unit: Megabytes
+# TYPE MemoryUsed gauge
+MemoryUsed{Level="Host",Hostname="1133b5db1ad2",} 732.3828125
+----
+
+=== Export to a project
+
+You can export these examples to a project (for example Quarkus) using:
+
+[source,console]
+----
+cd torchserve
+camel export --runtime quarkus --gav=org.apache.camel.example:torchserve:1.0-SNAPSHOT ping.java
+----
+
+=== Help and contributions
+
+If you hit any problem using Camel or have some feedback, then please
+https://camel.apache.org/community/support/[let us know].
+
+We also love contributors, so
+https://camel.apache.org/community/contributing/[get involved] :-)
+
+The Camel riders!
