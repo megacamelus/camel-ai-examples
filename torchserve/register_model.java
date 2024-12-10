@@ -1,5 +1,9 @@
 // camel-k: language=java dependency=camel:torchserve
 
+//DEPS org.apache.camel:camel-bom:4.9.0@pom
+//DEPS org.apache.camel:camel-core
+//DEPS org.apache.camel:camel-torchserve
+
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.torchserve.TorchServeConstants;
 import org.apache.camel.component.torchserve.client.model.ScaleWorkerOptions;

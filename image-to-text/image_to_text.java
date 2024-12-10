@@ -1,4 +1,8 @@
 // camel-k: dependency=camel:djl
+
+//DEPS org.apache.camel:camel-bom:4.9.0@pom
+//DEPS org.apache.camel:camel-core
+//DEPS org.apache.camel:camel-djl
 //DEPS ai.djl.pytorch:pytorch-engine:0.29.0
 //DEPS ai.djl.pytorch:pytorch-model-zoo:0.29.0
 //DEPS net.sf.extjwnl:extjwnl:2.0.5
