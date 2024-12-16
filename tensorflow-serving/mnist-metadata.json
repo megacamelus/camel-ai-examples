@@ -1,0 +1,120 @@
+{
+  "model_spec": {
+    "name": "mnist",
+    "signature_name": "",
+    "version": "1"
+  },
+  "metadata": {
+    "signature_def": {
+      "signature_def": {
+        "__saved_model_init_op": {
+          "inputs": {},
+          "outputs": {
+            "__saved_model_init_op": {
+              "dtype": "DT_INVALID",
+              "tensor_shape": {
+                "dim": [],
+                "unknown_rank": true
+              },
+              "name": "NoOp"
+            }
+          },
+          "method_name": "",
+          "defaults": {}
+        },
+        "serve": {
+          "inputs": {
+            "keras_tensor": {
+              "dtype": "DT_FLOAT",
+              "tensor_shape": {
+                "dim": [
+                  {
+                    "size": "-1",
+                    "name": ""
+                  },
+                  {
+                    "size": "28",
+                    "name": ""
+                  },
+                  {
+                    "size": "28",
+                    "name": ""
+                  }
+                ],
+                "unknown_rank": false
+              },
+              "name": "serve_keras_tensor:0"
+            }
+          },
+          "outputs": {
+            "output_0": {
+              "dtype": "DT_FLOAT",
+              "tensor_shape": {
+                "dim": [
+                  {
+                    "size": "-1",
+                    "name": ""
+                  },
+                  {
+                    "size": "10",
+                    "name": ""
+                  }
+                ],
+                "unknown_rank": false
+              },
+              "name": "StatefulPartitionedCall:0"
+            }
+          },
+          "method_name": "tensorflow/serving/predict",
+          "defaults": {}
+        },
+        "serving_default": {
+          "inputs": {
+            "keras_tensor": {
+              "dtype": "DT_FLOAT",
+              "tensor_shape": {
+                "dim": [
+                  {
+                    "size": "-1",
+                    "name": ""
+                  },
+                  {
+                    "size": "28",
+                    "name": ""
+                  },
+                  {
+                    "size": "28",
+                    "name": ""
+                  }
+                ],
+                "unknown_rank": false
+              },
+              "name": "serving_default_keras_tensor:0"
+            }
+          },
+          "outputs": {
+            "output_0": {
+              "dtype": "DT_FLOAT",
+              "tensor_shape": {
+                "dim": [
+                  {
+                    "size": "-1",
+                    "name": ""
+                  },
+                  {
+                    "size": "10",
+                    "name": ""
+                  }
+                ],
+                "unknown_rank": false
+              },
+              "name": "StatefulPartitionedCall_1:0"
+            }
+          },
+          "method_name": "tensorflow/serving/predict",
+          "defaults": {}
+        }
+      }
+    }
+  }
+}

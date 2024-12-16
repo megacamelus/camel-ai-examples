@@ -12,7 +12,7 @@ public class model_metadata extends RouteBuilder {
     public void configure() throws Exception {
         // @formatter:off
         from("timer:model-metadata?repeatCount=1")
-            .to("tensorflow-serving:model-metadata?modelName=half_plus_two&modelVersion=123")
+            .to("tensorflow-serving:model-metadata?modelName=mnist&modelVersion=1")
             .log("Metadata: ${body.getMetadataOrThrow('signature_def')}");
         // @formatter:on
     }

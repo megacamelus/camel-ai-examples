@@ -1,0 +1,12 @@
+model_config_list {
+  config {
+    name: 'half_plus_two'
+    base_path: '/models/half_plus_two'
+    model_platform: 'tensorflow'
+  }
+  config {
+    name: 'mnist'
+    base_path: '/models/mnist'
+    model_platform: 'tensorflow'
+  }
+}

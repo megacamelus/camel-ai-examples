@@ -25,13 +25,25 @@ camel run djl/ssd.java
 |===
 | Example | Category | Description
 
-| link:image-to-text/README.adoc[Image to Text] | CV | An example for showing how Camel can consume images and route the messages based on the text output classified from the images.
+| link:djl/README.adoc[DJL]
+| CV
+| A collection of small examples for showing what the Camel DJL component can do.
 
-| link:djl/README.adoc[DJL] | CV | A collection of small examples for showing what the Camel DJL component can do.
+| link:image-to-text/README.adoc[Image to Text]
+| CV
+| An example for showing how Camel can consume images and route the messages based on the text output classified from the images.
 
-| link:speech-to-text/README.adoc[Speech to Text] | Audio, NLP | An example for showing how Camel can translate audio speech data to text and then apply sentiment analysis to it for routing the messages.
+| link:speech-to-text/README.adoc[Speech to Text]
+| Audio, NLP
+| An example for showing how Camel can translate audio speech data to text and then apply sentiment analysis to it for routing the messages.
 
-| link:torchserve/README.adoc[TorchServe] | CV | A collection of small examples for showing what the Camel TorchServe component can do.
+| link:tensorflow-serving/README.adoc[TensorFlow Serving]
+| CV
+| A collection of small examples for showing what the Camel TensorFlow Serving component can do.
+
+| link:torchserve/README.adoc[TorchServe]
+| CV
+| A collection of small examples for showing what the Camel TorchServe component can do.
 |===
 
 == Help and contributions

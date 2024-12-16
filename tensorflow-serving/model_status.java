@@ -12,7 +12,7 @@ public class model_status extends RouteBuilder {
     public void configure() throws Exception {
         // @formatter:off
         from("timer:model-status?repeatCount=1")
-            .to("tensorflow-serving:model-status?modelName=half_plus_two&modelVersion=123")
+            .to("tensorflow-serving:model-status?modelName=mnist&modelVersion=1")
             .log("Status: ${body.getModelVersionStatus(0).state}");
         // @formatter:on
     }
