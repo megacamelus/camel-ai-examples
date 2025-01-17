@@ -11,6 +11,7 @@ import java.util.stream.IntStream;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
+import org.apache.camel.component.kserve.KServeComponent;
 
 import inference.GrpcPredictV2.InferTensorContents;
 import inference.GrpcPredictV2.ModelInferRequest;
@@ -18,8 +19,14 @@ import inference.GrpcPredictV2.ModelInferResponse;
 
 public class infer_simple extends RouteBuilder {
 
+    static String TARGET = "localhost:8001";
+
     @Override
     public void configure() throws Exception {
+        // Set up the target KServe server to use
+        var kserve = getCamelContext().getComponent("kserve", KServeComponent.class);
+        kserve.getConfiguration().setTarget(TARGET);
+
         // @formatter:off
         from("timer:infer-simple?repeatCount=1")
             .setBody(constant(createRequest()))
