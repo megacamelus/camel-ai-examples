@@ -1,0 +1,9 @@
+== Camel AI Examples: KServe
+
+*Requires: Apache Camel 4.10.0 or later*
+
+=== Introduction
+
+This directory contains a collection of small examples for showing what the https://camel.apache.org/components/next/kserve-component.html[Camel KServe component]
+can do.
+

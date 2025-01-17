@@ -33,6 +33,10 @@ camel run djl/ssd.java
 | CV
 | An example for showing how Camel can consume images and route the messages based on the text output classified from the images.
 
+| link:kserve/README.adoc[KServe]
+| CV
+| A collection of small examples for showing what the Camel KServe component can do.
+
 | link:speech-to-text/README.adoc[Speech to Text]
 | Audio, NLP
 | An example for showing how Camel can translate audio speech data to text and then apply sentiment analysis to it for routing the messages.
