@@ -132,6 +132,9 @@ INFO 51844 --- [ - timer://list] list_models.java:16 : [Model { modelName: mnist
 
 Now we are ready to run some inference (i.e. prediction) on the registered model. The link:predictions.java[example] reads handwritten digit images from the link:../data/mnist/[`data/mnist`] directory and sends them to the TorchServe server for recognising the numbers with the MNIST V2 model.
 
+.Recognition of handwritten numbers using the MNIST model
+image::predict-mnist.png[Recognition of handwritten numbers using the MNIST model]
+
 To run this example, execute the following command from the project root:
 
 [source,console]

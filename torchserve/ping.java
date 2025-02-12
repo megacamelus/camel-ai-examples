@@ -1,6 +1,4 @@
-// camel-k: language=java dependency=camel:torchserve
-
-//DEPS org.apache.camel:camel-bom:4.9.0@pom
+//DEPS org.apache.camel:camel-bom:4.10.0@pom
 //DEPS org.apache.camel:camel-core
 //DEPS org.apache.camel:camel-torchserve
 
