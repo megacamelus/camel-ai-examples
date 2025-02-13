@@ -1,5 +1,3 @@
-// camel-k: language=java dependency=camel:tensorflow-serving
-
 //DEPS org.apache.camel:camel-bom:4.10.0-SNAPSHOT@pom
 //DEPS org.apache.camel:camel-core
 //DEPS org.apache.camel:camel-tensorflow-serving

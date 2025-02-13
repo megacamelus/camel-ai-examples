@@ -1,5 +1,3 @@
-// camel-k: language=java dependency=camel:tensorflow-serving
-
 //DEPS org.apache.camel:camel-bom:4.10.0-SNAPSHOT@pom
 //DEPS org.apache.camel:camel-core
 //DEPS org.apache.camel:camel-tensorflow-serving
@@ -19,16 +17,27 @@ public class classify extends RouteBuilder {
     public void configure() throws Exception {
         // @formatter:off
         from("timer:classify?repeatCount=1")
-            .setBody(constant(Input.newBuilder()
-                .setExampleList(ExampleList.newBuilder()
-                    .addExamples(Example.newBuilder()
-                        .setFeatures(Features.newBuilder()
-                            .putFeature("x", Feature.newBuilder()
-                                .setFloatList(FloatList.newBuilder().addValue(1.0f))
-                                .build()))))
-                .build()))
+            .setBody(constant(createInput("x", 1.0f)))
             .to("tensorflow-serving:classify?modelName=half_plus_two&modelVersion=123&signatureName=classify_x_to_y")
             .log("Result: ${body.result}");
         // @formatter:on
+    }
+
+    Input createInput(String key, float f) {
+        Feature feature = Feature.newBuilder()
+                .setFloatList(FloatList.newBuilder().addValue(f))
+                .build();
+        Features features = Features.newBuilder()
+                .putFeature(key, feature)
+                .build();
+        Example example = Example.newBuilder()
+                .setFeatures(features)
+                .build();
+        ExampleList exampleList = ExampleList.newBuilder()
+                .addExamples(example)
+                .build();
+        return Input.newBuilder()
+                .setExampleList(exampleList)
+                .build();
     }
 }
