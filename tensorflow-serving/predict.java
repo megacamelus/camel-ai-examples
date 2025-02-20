@@ -19,9 +19,6 @@ import org.tensorflow.framework.TensorProto;
 import org.tensorflow.framework.TensorShapeProto;
 import org.tensorflow.framework.TensorShapeProto.Dim;
 
-import com.google.protobuf.Int64Value;
-
-import tensorflow.serving.Model.ModelSpec;
 import tensorflow.serving.Predict.PredictRequest;
 import tensorflow.serving.Predict.PredictResponse;
 
@@ -49,9 +46,6 @@ public class predict extends RouteBuilder {
                 .addAllFloatVal(data)
                 .build();
         PredictRequest request = PredictRequest.newBuilder()
-                .setModelSpec(ModelSpec.newBuilder()
-                        .setName("mnist")
-                        .setVersion(Int64Value.of(1)))
                 .putInputs("keras_tensor", inputs)
                 .build();
         exchange.getMessage().setBody(request);

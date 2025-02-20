@@ -91,6 +91,9 @@ value: "\n\245\001\n\005serve\022\233\001\n?\n\fkeras_tensor\022/\n\024serve_ker
 
 Once you know the metadata of the model, you can run predictions on the model. Let's try a link:models/mnist[MNIST saved model] to recognise handwritten digits with a Camel route. The link:predict.java[example route] reads handwritten digit images from the link:../data/mnist/[`data/mnist`] directory and sends them to the TensorFlow Serving server to recognise the numbers with the MNIST model.
 
+.Recognition of handwritten numbers using the MNIST model
+image::predict-mnist.png[Recognition of handwritten numbers using the MNIST model]
+
 [source,java]
 .link:predict.java[]
 ----
@@ -113,9 +116,6 @@ void toPredictRequest(Exchange exchange) {
             .addAllFloatVal(data)
             .build();
     PredictRequest request = PredictRequest.newBuilder()
-            .setModelSpec(ModelSpec.newBuilder()
-                    .setName("mnist")
-                    .setVersion(Int64Value.of(1)))
             .putInputs("keras_tensor", inputs)
             .build();
     exchange.getMessage().setBody(request);
@@ -195,20 +195,36 @@ In addition to the generic Predict API, TensorFlow Serving provides two speciali
 
 The MNIST model used in the previous example does not provide a signature for the classification problem, so for demonstration purposes here we will instead use a test model included in the TensorFlow Serving repository: https://github.com/tensorflow/serving/tree/2.18.0/tensorflow_serving/servables/tensorflow/testdata/saved_model_half_plus_two_cpu/00000123[half_plus_two]. This is a minimal model that simply divides the input value by two and adds two.
 
+.Half plus two
+image::classify-half_plus_two.png[Half plus two]
+
 [source,java]
 .link:classify.java[]
 ----
-from("timer:classify?repeatCount=1")
-    .setBody(constant(Input.newBuilder()
-        .setExampleList(ExampleList.newBuilder()
-            .addExamples(Example.newBuilder()
-                .setFeatures(Features.newBuilder()
-                    .putFeature("x", Feature.newBuilder()
-                        .setFloatList(FloatList.newBuilder().addValue(1.0f))
-                        .build()))))
-        .build()))
-    .to("tensorflow-serving:classify?modelName=half_plus_two&modelVersion=123&signatureName=classify_x_to_y")
-    .log("Result: ${body.result}");
+public void configure() throws Exception {
+    from("timer:classify?repeatCount=1")
+        .setBody(constant(createInput("x", 1.0f)))
+        .to("tensorflow-serving:classify?modelName=half_plus_two&modelVersion=123&signatureName=classify_x_to_y")
+        .log("Result: ${body.result}");
+}
+
+Input createInput(String key, float f) {
+    Feature feature = Feature.newBuilder()
+            .setFloatList(FloatList.newBuilder().addValue(f))
+            .build();
+    Features features = Features.newBuilder()
+            .putFeature(key, feature)
+            .build();
+    Example example = Example.newBuilder()
+            .setFeatures(features)
+            .build();
+    ExampleList exampleList = ExampleList.newBuilder()
+            .addExamples(example)
+            .build();
+    return Input.newBuilder()
+            .setExampleList(exampleList)
+            .build();
+}
 ----
 
 TIP: You can get the signature name `classify_x_to_y` from the model metadata.
@@ -235,6 +251,9 @@ INFO 94792 --- [imer://classify] classify.java:31 : Result: classifications {
 The other specialised inference API that TensorFlow Serving provides is the https://www.tensorflow.org/tfx/serving/api_rest#classify_and_regress_api[`Regress` API], which is dedicated to the regression problems. This API sends examples as the input data to a regression model and returns a regressed value per example.
 
 We will use the `half_plus_two` model again for demonstration purposes.
+
+.Half plus two
+image::classify-half_plus_two.png[Half plus two]
 
 [source,java]
 .link:regress.java[]
