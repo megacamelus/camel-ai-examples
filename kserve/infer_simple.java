@@ -9,7 +9,8 @@ import java.util.stream.IntStream;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
-import org.apache.camel.component.kserve.KServeComponent;
+
+import com.google.protobuf.ByteString;
 
 import inference.GrpcPredictV2.InferTensorContents;
 import inference.GrpcPredictV2.ModelInferRequest;
@@ -17,20 +18,15 @@ import inference.GrpcPredictV2.ModelInferResponse;
 
 public class infer_simple extends RouteBuilder {
 
-    static String TARGET = "localhost:8001";
-
     @Override
     public void configure() throws Exception {
-        // Set up the target KServe server to use
-        var kserve = getCamelContext().getComponent("kserve", KServeComponent.class);
-        kserve.getConfiguration().setTarget(TARGET);
-
         // @formatter:off
         from("timer:infer-simple?repeatCount=1")
             .setBody(constant(createRequest()))
             .to("kserve:infer?modelName=simple&modelVersion=1")
             .process(this::postprocess)
-            .log("Result: ${body}");
+            .log("Result[0]: ${body[0]}")
+            .log("Result[1]: ${body[1]}");
         // @formatter:on
     }
 
@@ -52,12 +48,17 @@ public class infer_simple extends RouteBuilder {
 
     void postprocess(Exchange exchange) {
         var response = exchange.getMessage().getBody(ModelInferResponse.class);
-        var content = response.getRawOutputContents(0);
-        var buffer = content.asReadOnlyByteBuffer().order(ByteOrder.LITTLE_ENDIAN).asIntBuffer();
-        var ints = new ArrayList<Integer>(buffer.remaining());
-        while (buffer.hasRemaining()) {
-            ints.add(buffer.get());
-        }
-        exchange.getMessage().setBody(ints);
+        var outList = response.getRawOutputContentsList().stream()
+                .map(ByteString::asReadOnlyByteBuffer)
+                .map(buf -> buf.order(ByteOrder.LITTLE_ENDIAN).asIntBuffer())
+                .map(buf -> {
+                    var ints = new ArrayList<Integer>(buf.remaining());
+                    while (buf.hasRemaining()) {
+                        ints.add(buf.get());
+                    }
+                    return ints;
+                })
+                .collect(Collectors.toList());
+        exchange.getMessage().setBody(outList);
     }
 }
