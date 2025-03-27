@@ -203,9 +203,7 @@ outputs {
 
 Once you know the metadata of the model, you can run predictions on the model. Let's invoke the `simple` model to run a very simple prediction.
 
-As you confirmed in the <<Obtain model metadata>> section, the `simple` model takes two `INT32` lists of size 16 as the inputs, `INPUT0` and `INPUT1`, and returns two `INT32` lists of size 16 as the outputs, `OUTPUT0` and `OUTPUT1`. The model simply adds 1 to each element of `INPUT0` and returns it as `OUTPUT0`. The model returns `1` for each element of `INPUT1` as `OUTPUT1`.
-
-The model simply returns the result of adding each element of `INPUT0` and `INPUT1` as `OUTPUT0` and subtracting each element of `INPUT0` and `INPUT1` as `OUTPUT1`.
+As you confirmed in the <<Obtain model metadata>> section, the `simple` model takes two `INT32` lists of size 16 as the inputs, `INPUT0` and `INPUT1`, and returns two `INT32` lists of size 16 as the outputs, `OUTPUT0` and `OUTPUT1`. The model simply returns the result of adding each element of `INPUT0` and `INPUT1` as `OUTPUT0` and subtracting each element of `INPUT0` and `INPUT1` as `OUTPUT1`.
 
 .Invoking the simple model
 image::infer-simple.png[Invoking the simple model]
